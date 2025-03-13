@@ -1,8 +1,16 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Kantor {
     private List<Pegawai> daftarPegawai = new ArrayList<>();
+    private static final NumberFormat currencyFormatter = NumberFormat.getInstance(new Locale("id", "ID"));
+    
+    public Kantor() {
+        currencyFormatter.setGroupingUsed(true);
+        currencyFormatter.setMaximumFractionDigits(0);
+    }
 
     public void tambahPegawai(Pegawai pegawai) {
         daftarPegawai.add(pegawai);
@@ -23,7 +31,13 @@ public class Kantor {
             System.out.println("Tidak ada pegawai.");
         } else {
             System.out.println("Daftar Pegawai:");
-            daftarPegawai.forEach(p -> System.out.println("- " + p.getNama()));
+            for (Pegawai p : daftarPegawai) {
+                System.out.println("- " + p.getNama() + " (Gaji: Rp " + formatCurrency(p.getGaji()) + ")");
+            }
         }
+    }
+    
+    private String formatCurrency(double amount) {
+        return currencyFormatter.format(amount);
     }
 }
